@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+
+    <title>JSONP实现</title>
+    <style>
+        .container {
+            width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <ul class="news">
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        <button class="btn">换一组</button>
+    </div>
+
+    <script>
+        var btn = document.querySelector(".btn");
+        var liList = document.querySelector(".news")
+        btn.addEventListener("click",function(){
+            var script = document.createElement("script");
+            script.src = "http://localhost:8080/getNews?callback=appendHtml";
+            document.head.appendChild(script);
+            document.head.removeChild(script);
+        })
+        function appendHtml(news){
+            var html = "";
+            for(var i = 0; i<news.length; i++){
+                 html += "<li>" + news[i] + "</li>";
+            }
+            liList.innerHTML = html;
+        }
+
+    </script>
+</body>
+</html>

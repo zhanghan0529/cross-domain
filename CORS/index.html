@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>CORS</title>
+  <style>
+    .container {
+      width: 600px;
+      margin: 0 auto;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <ul class="news">
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+    <button class="btn">换一组</button>
+  </div>
+</body>
+<script>
+  var btn = document.querySelector(".btn");
+  var liList = document.querySelector(".news");
+  btn.addEventListener("click", function () {
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 304 || xhr.status === 200) {
+          isNews(JSON.parse(xhr.responseText));
+        }
+      }
+    }
+
+    function isNews(e) {
+      var html = "";
+      for (var i = 0; i < e.length; i++) {
+        html += "<li>" + e[i] + "</li>";
+      }
+      liList.innerHTML = html
+    }
+    xhr.open("get", "http://b.jrg.com:8080/getNews", true);
+    xhr.send();
+  })
+</script>
+
+</html>
